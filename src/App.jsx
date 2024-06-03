@@ -1,5 +1,6 @@
 import "./App.css";
 import EnrolmentForm from "./enrollement_form";
+import EnrolList from "./enrolList"; // Ensure this import matches the file name case
 import { useState } from "react";
 
 const App = () => {
@@ -12,7 +13,8 @@ const App = () => {
     setPgSeats(pgSeats);
     setUgSeats(ugSeats);
   };
-const setUpdatedSeats = (updatedSeats) => {
+
+  const setUpdatedSeats = (updatedSeats) => {
     if (program === "UG") {
       setUgSeats(updatedSeats);
     } else {
@@ -23,16 +25,10 @@ const setUpdatedSeats = (updatedSeats) => {
   return (
     <div className="App">
       <div className="programs">
-      <h3 className="title">Student Enrolment Form</h3>
+        <h3 className="title">Student Enrolment Form</h3>
         <ul className="ulEnrol">
-
-  <li className="parentLabels" onChange={handleChange}>
-            <input
-              type="radio"
-              value="UG"
-              name="programGroup"
-              defaultChecked
-            />
+          <li className="parentLabels" onChange={handleChange}>
+            <input type="radio" value="UG" name="programGroup" defaultChecked />
             Undergraduate
             <input
               type="radio"
@@ -52,11 +48,11 @@ const setUpdatedSeats = (updatedSeats) => {
       <EnrolmentForm
         chosenProgram={program}
         setUpdatedSeats={setUpdatedSeats}
-
         currentSeats={program === "UG" ? ugSeats : pgSeats}
       />
+      <EnrolList /> {/* Added EnrolList component here */}
     </div>
   );
-}
+};
 
 export default App;
