@@ -8,12 +8,25 @@ const App = () => {
   const [ugSeats, setUgSeats] = useState(60);
   const [pgSeats, setPgSeats] = useState(40);
   const [studentDetails, setStudentDetails] = useState({});
+  const [action, setAction] = useState();
+const [selItemId, setSelItemId] = useState();
 
   const handleChange = (event) => {
     setProgram(event.target.value);
     setPgSeats(pgSeats);
     setUgSeats(ugSeats);
   };
+
+  const handleItemSelection = (action, id) => {
+    setAction(action);
+    setSelItemId(id);
+  }
+
+  const restoreSeats = (pgm) =>
+    {
+      pgm === "UG" ?setUgSeats(ugSeats+1) : setPgSeats(pgSeats+1);
+      setAction("");
+    }
 
   const setUpdatedSeats = (updatedSeats) => {
     if (program === "UG") {
@@ -48,11 +61,18 @@ const App = () => {
       </div>
       <EnrolmentForm
         chosenProgram={program}
-        setUpdatedSeats={setUpdatedSeats}
+        setSeats={setUpdatedSeats}
         currentSeats={program === "UG" ? ugSeats : pgSeats}
         setStudentDetails={setStudentDetails}
+        handleItemSelection={handleItemSelection}
       />
-      <EnrolList studentDetails={studentDetails} setStudentDetails={setStudentDetails} />
+      <EnrolList
+        studentDetails={studentDetails}
+        setStudentDetails={setStudentDetails}
+        selectedItemId={selItemId}
+        action={action}
+        restoreSeats ={restoreSeats}
+      />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import "./App.css";
+import { MdEdit, MdDelete } from "react-icons/md";
 
 const EnrolmentForm =(props) => {
   const [firstName, setFirstName] = useState("");
@@ -9,8 +10,8 @@ const EnrolmentForm =(props) => {
   const [welcomeMessage, setWelcomeMessage] = useState("");
   const handleClick = (event) => {
     handleInputReset("","","");
-    props.setUpdatedSeats(props.currentSeats - 1);
-    // Student ID generation
+    props.setSeats(props.currentSeats - 1);
+   // Student ID generation Student ID generation
     const randomKey = Math.floor(1000 + Math.random() * 9000);
     let id = randomKey;
     props.setStudentDetails({
@@ -19,7 +20,9 @@ const EnrolmentForm =(props) => {
       lname: lastName,
       program: props.chosenProgram,
       email: email,
-    });
+        edit: <MdEdit className="actionIcon" />,
+      delete: <MdDelete className="actionIcon" onClick={() => props.handleItemSelection("delete",id)}/>
+   });
     event.preventDefault();
   };
 //change of input value set method

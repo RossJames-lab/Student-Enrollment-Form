@@ -7,15 +7,36 @@ const EnrolList = (props) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const curItemKey = studentDetails.key;
+    const curItemKey = props.studentDetails.key;
     if (curItemKey) {
-      setItems([...items, studentDetails]);
-      setStudentDetails({});
+      setItems(prevItems => [...prevItems, props.studentDetails]);
+      props.setStudentDetails({});
     }
-  }, [studentDetails, setStudentDetails]);
+    // Execute deletion on the selected item.
+    if (props.action === "delete") {
+      // filter the selected item
+      const deleteItem = items.filter(
+        (item) => item.key === props.selectedItemId
+      )[0];
+  
+      // Remove from the list
+      setItems(prevItems => prevItems.filter((item) => item !== deleteItem));
+      // update seats
+      props.restoreSeats(deleteItem.program);
+    }
+  }, [props]);
+  
 
   // Columns for the detail list.
   const columns = [
+    {
+      key: "edit",
+      name: "Edit",
+      fieldName: "edit",
+      minWidth: 30,
+      maxWidth: 200,
+      isResizable: true,
+    },
     {
       key: "fname",
       name: "First Name",
@@ -45,6 +66,14 @@ const EnrolList = (props) => {
       name: "Email",
       fieldName: "email",
       minWidth: 130,
+      maxWidth: 200,
+      isResizable: true,
+    },
+    {
+      key: "delete",
+      name: "Delete",
+      fieldName: "delete",
+      minWidth: 50,
       maxWidth: 200,
       isResizable: true,
     },

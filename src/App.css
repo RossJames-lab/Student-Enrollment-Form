@@ -92,3 +92,9 @@
 .message {
   color:rgba(31, 226, 80, 0.671);
 }
+
+.actionIcon {
+  font-size: 16px;
+  color: rgb(77, 133, 141);
+  cursor: pointer;
+}
