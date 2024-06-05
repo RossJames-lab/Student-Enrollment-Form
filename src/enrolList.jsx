@@ -1,59 +1,60 @@
+import React, { useState, useEffect } from "react";
 import "./enrolList.css";
 import { DetailsList } from "@fluentui/react/lib/DetailsList";
 
-// Columns for the detail list.
-const columns = [
-  {
-    key: "fname",
-    name: "First Name",
-    fieldName: "fname",
-    minWidth: 90,
-    maxWidth: 200,
-    isResizable: true,
-  },
-  {
-    key: "lname",
-    name: "Last Name",
-    fieldName: "lname",
-    minWidth: 90,
-    maxWidth: 200,
-    isResizable: true,
-  },
-  {
-    key: "program",
-    name: "Program",
-    fieldName: "program",
-    minWidth: 60,
-    maxWidth: 200,
-    isResizable: true,
-  },
-  {
-    key: "email",
-    name: "Email",
-    fieldName: "email",
-    minWidth: 130,
-    maxWidth: 200,
-    isResizable: true,
-  },
-];
+const EnrolList = (props) => {
+  const { studentDetails, setStudentDetails } = props;
+  const [items, setItems] = useState([]);
 
-// Test items
-let items = [];
-for (let i = 1; i < 5; i++) {
-  items.push({
-    key: i,
-    fname: "FirstName " + i,
-    lname: "LastName " + i,
-    program: "UG",
-    email: "Email " + i,
-  });
-}
+  useEffect(() => {
+    const curItemKey = studentDetails.key;
+    if (curItemKey) {
+      setItems([...items, studentDetails]);
+      setStudentDetails({});
+    }
+  }, [studentDetails, setStudentDetails]);
 
-const enrolList = () => {
+  // Columns for the detail list.
+  const columns = [
+    {
+      key: "fname",
+      name: "First Name",
+      fieldName: "fname",
+      minWidth: 90,
+      maxWidth: 200,
+      isResizable: true,
+    },
+    {
+      key: "lname",
+      name: "Last Name",
+      fieldName: "lname",
+      minWidth: 90,
+      maxWidth: 200,
+      isResizable: true,
+    },
+    {
+      key: "program",
+      name: "Program",
+      fieldName: "program",
+      minWidth: 60,
+      maxWidth: 200,
+      isResizable: true,
+    },
+    {
+      key: "email",
+      name: "Email",
+      fieldName: "email",
+      minWidth: 130,
+      maxWidth: 200,
+      isResizable: true,
+    },
+  ];
+
   return (
     <div className="enrolList">
       <DetailsList items={items} columns={columns} />
     </div>
   );
 };
-export default enrolList;
+
+export default EnrolList;

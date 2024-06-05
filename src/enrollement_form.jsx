@@ -9,8 +9,17 @@ const EnrolmentForm =(props) => {
   const [welcomeMessage, setWelcomeMessage] = useState("");
   const handleClick = (event) => {
     handleInputReset("","","");
-    setWelcomeMessage(`${firstName} ${lastName} enrolled. Email sent to - ${email}`);
     props.setUpdatedSeats(props.currentSeats - 1);
+    // Student ID generation
+    const randomKey = Math.floor(1000 + Math.random() * 9000);
+    let id = randomKey;
+    props.setStudentDetails({
+      key: id,
+      fname: firstName,
+      lname: lastName,
+      program: props.chosenProgram,
+      email: email,
+    });
     event.preventDefault();
   };
 //change of input value set method
