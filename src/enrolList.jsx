@@ -7,25 +7,33 @@ const EnrolList = (props) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const curItemKey = props.studentDetails.key;
-    if (curItemKey) {
-      setItems(prevItems => [...prevItems, props.studentDetails]);
-      props.setStudentDetails({});
-    }
+    let updatedItems = items;
     // Execute deletion on the selected item.
     if (props.action === "delete") {
-      // filter the selected item
-      const deleteItem = items.filter(
+      // Filter the selected item
+      const deleteItem = updatedItems.filter(
         (item) => item.key === props.selectedItemId
       )[0];
-  
-      // Remove from the list
-      setItems(prevItems => prevItems.filter((item) => item !== deleteItem));
-      // update seats
+      // Update seats
       props.restoreSeats(deleteItem.program);
+      // Remove from the list
+      updatedItems = updatedItems.filter((item) => item !== deleteItem);
     }
-  }, [props]);
-  
+    // Update the list items with the student details after rendering
+    const curItemKey = studentDetails.key;
+    if (curItemKey) {
+      const i = updatedItems.findIndex((item) => item.key === curItemKey);
+      if (i > -1) {
+        updatedItems = updatedItems.map((item) =>
+          item.key === curItemKey ? studentDetails : item
+        );
+      } else {
+        updatedItems = [...updatedItems, studentDetails];
+      }
+      setStudentDetails({});
+    }
+    setItems(updatedItems);
+  }, [props, studentDetails, setStudentDetails]);
 
   // Columns for the detail list.
   const columns = [

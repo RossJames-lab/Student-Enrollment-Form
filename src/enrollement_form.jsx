@@ -1,36 +1,59 @@
-
 import { useState } from "react";
 import "./App.css";
 import { MdEdit, MdDelete } from "react-icons/md";
 
-const EnrolmentForm =(props) => {
+const EnrolmentForm = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [welcomeMessage, setWelcomeMessage] = useState("");
+  const [btnValue, setBtnValue] = useState("Enrol");
+  const [studentID, setStudentID] = useState(0);
+
+  const handleEdit = (stId) => {
+    handleInputReset(firstName, lastName, email);
+    setStudentID(stId);
+    setBtnValue("Update");
+  };
+
+  const handleClickCancel = (event) => {
+    handleInputReset("", "", "");
+    setBtnValue("Enrol");
+    event.preventDefault();
+  };
+
   const handleClick = (event) => {
-    handleInputReset("","","");
+    handleInputReset("", "", "");
     props.setSeats(props.currentSeats - 1);
-   // Student ID generation Student ID generation
+    // Student ID generation
     const randomKey = Math.floor(1000 + Math.random() * 9000);
     let id = randomKey;
+    setStudentID(randomKey);
+    // For Enrol, use the randomKey variable and for Update use the state variable
+    id = btnValue === "Enrol" ? randomKey : studentID;
     props.setStudentDetails({
       key: id,
       fname: firstName,
       lname: lastName,
       program: props.chosenProgram,
       email: email,
-        edit: <MdEdit className="actionIcon" />,
-      delete: <MdDelete className="actionIcon" onClick={() => props.handleItemSelection("delete",id)}/>
-   });
+      edit: <MdEdit className="actionIcon" onClick={() => handleEdit(id)} />,
+      delete: (
+        <MdDelete
+          className="actionIcon"
+          onClick={() => props.handleItemSelection("delete", id)}
+        />
+      ),
+    });
+    setBtnValue("Enrol");
     event.preventDefault();
   };
-//change of input value set method
+  // Change of input value set method
   const handleInputChange = (setInput, event) => {
     setInput(event.target.value);
   };
-//set input fields
-const handleInputReset = (fname, lname, email) => {
+  // Set input fields
+  const handleInputReset = (fname, lname, email) => {
     setFirstName(fname);
     setLastName(lname);
     setEmail(email);
@@ -38,11 +61,10 @@ const handleInputReset = (fname, lname, email) => {
   return (
     <div>
       <div className="enrolContainer">
-        <form className="enrolForm" name="enrolForm" >
-            <ul className="ulEnrol">
-
-           <li>
-              <label for="firstname"></label>
+        <form className="enrolForm" name="enrolForm">
+          <ul className="ulEnrol">
+            <li>
+              <label htmlFor="firstname"></label>
               <input
                 type="text"
                 className="inputFields"
@@ -54,9 +76,9 @@ const handleInputReset = (fname, lname, email) => {
               />
             </li>
             <li>
-              <label for="lastname"></label>
+              <label htmlFor="lastname"></label>
               <input
-                type="test"
+                type="text"
                 className="inputFields"
                 id="lastname"
                 name="lastname"
@@ -66,7 +88,7 @@ const handleInputReset = (fname, lname, email) => {
               />
             </li>
             <li>
-              <label for="email"></label>
+              <label htmlFor="email"></label>
               <input
                 type="email"
                 className="inputFields"
@@ -82,18 +104,30 @@ const handleInputReset = (fname, lname, email) => {
                 type="submit"
                 id="btnEnrol"
                 name="Enrol"
+                className="btn"
                 alt="Enrol"
-                value="Enrol"
+                value={btnValue}
                 onClick={handleClick}
               />
+              <input
+                type="submit"
+                id="btnCancel"
+                name="Cancel"
+                className="btn"
+                alt="Cancel"
+                value="Cancel"
+                onClick={handleClickCancel}
+              />
             </li>
-          <li> <label id="studentMsg" className="message">
-          {welcomeMessage}
-        </label></li>
+            <li>
+              <label id="studentMsg" className="message">
+                {welcomeMessage}
+              </label>
+            </li>
           </ul>
         </form>
       </div>
     </div>
   );
-}
+};
 export default EnrolmentForm;
