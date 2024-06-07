@@ -1,7 +1,7 @@
 import "./App.css";
-import EnrolmentForm from "./enrollement_form";
-import EnrolList from "./enrolList"; // Ensure this import matches the file name case
-import { useState } from "react";
+import React, { useState, Suspense } from "react";
+import EnrolmentForm from "./enrollement_form.jsx";
+const EnrolList = React.lazy(() => import("./enrolList.jsx"));
 
 const App = () => {
   const [program, setProgram] = useState("UG");
@@ -85,13 +85,13 @@ const handleChange = (event) => {
         handleItemSelection={handleItemSelection}
         setSelectedProgram={setSelectedProgram}
       />
-      <EnrolList
+      <Suspense fallback={<div> Enrolled student details loading......</div>}><EnrolList
         studentDetails={studentDetails}
         setStudentDetails={setStudentDetails}
         selectedItemId={selItemId}
         action={action}
-        restoreSeats ={restoreSeats}
-      />
+        restoreSeats={restoreSeats}
+        /></Suspense>
     </div>
   );
 };
