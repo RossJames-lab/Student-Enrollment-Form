@@ -10,12 +10,18 @@ const App = () => {
   const [studentDetails, setStudentDetails] = useState({});
   const [action, setAction] = useState();
 const [selItemId, setSelItemId] = useState();
+const [isUGChecked, setIsUGChecked] = useState(true);
+const [isRestoreSeats, setIsRestoreSeats] = useState(false)
 
-  const handleChange = (event) => {
-    setProgram(event.target.value);
-    setPgSeats(pgSeats);
-    setUgSeats(ugSeats);
-  };
+const handleChange = (event) => {
+  setProgram(event.target.value);
+  setIsUGChecked(!isUGChecked);
+  if(isRestoreSeats)
+  {
+    event.target.value === "UG" ? setPgSeats(pgSeats + 1) :          setUgSeats(ugSeats + 1);
+   setIsRestoreSeats(false);
+  }
+};
 
   const handleItemSelection = (action, id) => {
     setAction(action);
@@ -36,19 +42,31 @@ const [selItemId, setSelItemId] = useState();
     }
   };
 
+  const setSelectedProgram = (selProgram) => {
+    selProgram === "UG" ? setIsUGChecked(true) : setIsUGChecked(false);
+    setProgram(selProgram);
+    setIsRestoreSeats(true);
+  };
+
   return (
     <div className="App">
       <div className="programs">
         <h3 className="title">Student Enrolment Form</h3>
         <ul className="ulEnrol">
-          <li className="parentLabels" onChange={handleChange}>
-            <input type="radio" value="UG" name="programGroup" defaultChecked />
+        <li className="parentLabels" onChange={handleChange}>
+            <input
+              type="radio"
+              value="UG"
+              name="programGroup"
+              checked={isUGChecked}
+            />
             Undergraduate
             <input
               type="radio"
               className="radioSel"
               value="PG"
               name="programGroup"
+              checked={!isUGChecked}
             />
             Postgraduate
           </li>
@@ -65,6 +83,7 @@ const [selItemId, setSelItemId] = useState();
         currentSeats={program === "UG" ? ugSeats : pgSeats}
         setStudentDetails={setStudentDetails}
         handleItemSelection={handleItemSelection}
+        setSelectedProgram={setSelectedProgram}
       />
       <EnrolList
         studentDetails={studentDetails}
