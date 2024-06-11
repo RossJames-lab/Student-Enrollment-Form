@@ -7,6 +7,15 @@ const EnrolList = (props) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
+    if (props.action === "edit") {
+      const currentItem = items.filter(
+        (item) => item.key === props.selectedItemId
+      )[0];
+      props.setSelectedProgram(currentItem.program);
+    }
+  }, [props.selectedItemId, props.action, items, props]);
+
+  useEffect(() => {
     let updatedItems = items;
     // Execute deletion on the selected item.
     if (props.action === "delete") {
@@ -33,7 +42,14 @@ const EnrolList = (props) => {
       setStudentDetails({});
     }
     setItems(updatedItems);
-  }, [props, studentDetails, setStudentDetails]);
+
+    // Ensure this only runs when studentDetails or chosenProgram actually change
+    if (curItemKey && studentDetails.program !== props.chosenProgram) {
+      props.studentDetails.program = props.chosenProgram;
+      props.setUpdatedSeats(props.currentSeats - 1);
+    }
+
+  }, [props.action, props.selectedItemId, props.chosenProgram, props.currentSeats, studentDetails, setStudentDetails, items]);
 
   // Columns for the detail list.
   const columns = [

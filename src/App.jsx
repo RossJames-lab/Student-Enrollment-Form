@@ -78,20 +78,20 @@ const handleChange = (event) => {
         </ul>
       </div>
       <EnrolmentForm
-        chosenProgram={program}
-        setSeats={setUpdatedSeats}
-        currentSeats={program === "UG" ? ugSeats : pgSeats}
-        setStudentDetails={setStudentDetails}
-        handleItemSelection={handleItemSelection}
-        setSelectedProgram={setSelectedProgram}
-      />
+          setStudentDetails={setStudentDetails}
+          handleItemSelection={handleItemSelection}
+  />
       <Suspense fallback={<div> Enrolled student details loading......</div>}><EnrolList
-        studentDetails={studentDetails}
-        setStudentDetails={setStudentDetails}
-        selectedItemId={selItemId}
-        action={action}
-        restoreSeats={restoreSeats}
-        /></Suspense>
+            studentDetails={studentDetails}
+            setStudentDetails={setStudentDetails}
+            selectedItemId={selItemId}
+            action={action}
+            restoreSeats={restoreSeats}
+            setUpdatedSeats={setUpdatedSeats}
+            currentSeats={program === "UG" ? ugSeats : pgSeats}
+            chosenProgram ={program}
+setSelectedProgram={setSelectedProgram}
+          /></Suspense>
     </div>
   );
 };

@@ -10,12 +10,12 @@ const EnrolmentForm = (props) => {
   const [btnValue, setBtnValue] = useState("Enrol");
   const [studentID, setStudentID] = useState(0);
 
-  const handleEdit = (stId, program) => {
+  const handleEdit = (stId) => {
     handleInputReset(firstName, lastName, email);
     setStudentID(stId);
     setBtnValue("Update");
-    props.setSelectedProgram(program);
-  };
+    props.handleItemSelection("edit", stId);
+};
 
   const handleClickCancel = (event) => {
     handleInputReset("", "", "");
@@ -25,7 +25,6 @@ const EnrolmentForm = (props) => {
 
   const handleClick = (event) => {
     handleInputReset("", "", "");
-    props.setSeats(props.currentSeats - 1);
     // Student ID generation
     const randomKey = Math.floor(1000 + Math.random() * 9000);
     let id = randomKey;
@@ -36,9 +35,8 @@ const EnrolmentForm = (props) => {
       key: id,
       fname: firstName,
       lname: lastName,
-      program: props.chosenProgram,
       email: email,
-      edit: <MdEdit className="actionIcon" onClick={() => handleEdit(id, props.chosenProgram)} />,
+      edit: <MdEdit className="actionIcon" onClick={() => handleEdit(id)} />,
       delete: (
         <MdDelete
           className="actionIcon"
